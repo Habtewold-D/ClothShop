@@ -1,0 +1,41 @@
+/* src/components/ItemCard.css */
+.item-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .item-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .item-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .item-info h3 {
+    color: #2d2d2d;
+    margin: 15px 0;
+  }
+  
+  .item-info p {
+    color: #f5a623;
+    font-size: 1.2rem;
+    margin: 5px 0;
+  }
+  
+  .item-info a {
+    color: #2d2d2d;
+    font-size: 1.1rem;
+    text-decoration: underline;
+  }
+  
+  .item-info a:hover {
+    color: #f5a623;
+  }
+  

@@ -1,0 +1,35 @@
+/* src/components/CategoryCard.css */
+.category-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .category-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .category-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .category-info h2 {
+    color: #2d2d2d;
+    margin: 15px 0;
+  }
+  
+  .category-info a {
+    color: #f5a623;
+    font-size: 1.1rem;
+    text-decoration: underline;
+  }
+  
+  .category-info a:hover {
+    color: #2d2d2d;
+  }
+  

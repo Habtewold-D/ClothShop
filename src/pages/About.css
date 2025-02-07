@@ -1,0 +1,19 @@
+/* src/pages/About.css */
+.about {
+    text-align: center;
+    padding: 40px;
+    background-color: #f8f4e4; /* Lighter off-white/beige background */
+}
+
+.about h1 {
+    color: #2d2d2d;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.about p {
+    color: #444;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}

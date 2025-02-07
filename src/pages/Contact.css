@@ -1,0 +1,79 @@
+/* src/pages/Contact.css */
+.contact {
+    padding: 40px 50px;
+    text-align: center;
+    background-color: #f8f4e4; /* Lighter off-white/beige background */
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    margin-top: -50px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.2rem;
+    margin-bottom: -150px;
+    flex: 1 1 200px;
+}
+
+.contact-item p {
+    margin: 0;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+.social-media {
+    margin-top: 140px;
+}
+
+.social-media h3 {
+    font-size: 1.4rem;
+    color: #2d2d2d;
+    margin-bottom: 20px;
+}
+
+.social-media .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
+.social-media .social-icons a {
+    font-size: 2rem;
+    color: #2d2d2d;
+    transition: color 0.3s;
+}
+
+.social-media .social-icons a:hover {
+    color: #f5a623;
+}
+
+/* Media Queries for smaller screens */
+@media (max-width: 768px) {
+    .contact-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    .social-media .social-icons {
+        gap: 20px;
+    }
+
+    .social-media h3 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-item {
+        font-size: 1rem;
+        gap: 5px;
+    }
+}
