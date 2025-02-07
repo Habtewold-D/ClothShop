@@ -1,0 +1,77 @@
+/* src/components/Header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #2d2d2d; /* Dark background */
+    color: white;
+  }
+  
+  .header .logo a {
+    font-size: 1.8rem;
+    color: #f5a623; /* Warm yellow color */
+    text-decoration: none;
+  }
+  
+  .nav-links ul {
+    display: flex;
+    list-style-type: none;
+  }
+  
+  .nav-links ul li {
+    margin: 0 15px;
+  }
+  
+  .nav-links ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links ul li a:hover {
+    color: #f5a623;
+  }
+  
+  .menu-icon {
+    display: none; /* Hidden on desktop */
+    cursor: pointer;
+  }
+  
+  .menu-icon .bar {
+    width: 25px;
+    height: 4px;
+    margin: 4px;
+    background-color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .menu-icon {
+      display: block;
+    }
+  
+    .nav-links {
+      display: none;
+    }
+  
+    .nav-links.active {
+      display: block;
+      position: absolute;
+      top: 70px;
+      right: 0;
+      background-color: #2d2d2d;
+      width: 200px;
+      text-align: center;
+      padding: 10px 0;
+    }
+  
+    .nav-links ul {
+      flex-direction: column;
+    }
+  
+    .nav-links ul li {
+      margin: 10px 0;
+    }
+  }
+  
