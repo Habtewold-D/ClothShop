@@ -4,11 +4,12 @@
     display: flex;
     justify-content: center;
     gap: 10px;
+    flex-wrap: wrap;  /* Allow pagination buttons to wrap on smaller screens */
   }
   
   .pagination button {
     padding: 10px 15px;
-    background-color: #f5a623;
+    background-color: #f5a623;  /* Orange background */
     color: white;
     border: none;
     border-radius: 5px;
@@ -17,6 +18,21 @@
   }
   
   .pagination button:hover {
-    background-color: #e68a00;
+    background-color: #e68a00;  /* Darker orange on hover */
+  }
+  
+  /* Style for the active page number */
+  .pagination button.active {
+    background-color: white;   /* White background for active page */
+    color: #f5a623;            /* Orange text for active page */
+    border: 2px solid #f5a623;  /* Border around active button */
+  }
+  
+  /* Add media query to make pagination buttons smaller on very small screens */
+  @media (max-width: 480px) {
+    .pagination button {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
   }
   

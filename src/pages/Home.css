@@ -1,8 +1,7 @@
-/* src/pages/Home.css */
 .home {
     text-align: center;
     padding: 40px;
-    background-color: #f8f4e4; /* Lighter off-white/beige background */
+    background-color: #f8f4e4; /* Changed to match About page background color */
 }
 
 .category-container {
@@ -12,7 +11,7 @@
 }
 
 .category-card {
-    background-color: #fff; /* White card background */
+    background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -53,7 +52,7 @@
 /* Media Queries for responsive design */
 @media (max-width: 1024px) {
     .category-container {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on medium screens */
     }
 
     .category-card h3 {
@@ -68,7 +67,7 @@
 
 @media (max-width: 768px) {
     .category-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* 1 column on smaller screens */
     }
 
     .category-card h3 {
