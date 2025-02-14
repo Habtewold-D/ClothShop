@@ -1,7 +1,8 @@
+/* Home Page Styles */
 .home {
     text-align: center;
     padding: 40px;
-    background-color: #f8f4e4; /* Changed to match About page background color */
+    background-color: #f8f4e4; /* Lighter off-white/beige background */
 }
 
 .category-container {
@@ -23,9 +24,9 @@
 }
 
 .category-card img {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
+    width: 300px; /* Increased width */
+    height: 300px; /* Increased height */
+    object-fit: cover; /* Ensures image covers the area without distortion */
     border-radius: 10px;
 }
 

@@ -5,12 +5,12 @@ import './Home.css';
 
 const Home = () => {
   const categories = [
-    { title: "Women's Clothes", image: "assets/images/cloth.jpg", link: "/shop?page=2" },
-    { title: "Family Clothes", image: "assets/images/family_cloth.jpg", link: "/shop?page=3" },
-    { title: "GABI/NETELA", image: "assets/images/gabi.jpg", link: "/shop?page=4" },
-    { title: "Couple Clothes", image: "assets/images/couple_cloth.jpg", link: "/shop?page=5" },
-    { title: "Children's Clothes", image: "assets/images/children_cloth.jpg", link: "/shop?page=6" },
-    { title: "Male Clothes", image: "assets/images/male_cloth.jpg", link: "/shop?page=7" }
+    { title: "Women's Clothes", image: "assets/images/women1.webp", link: "/shop?page=2" },
+    { title: "Family Clothes", image: "assets/images/family3.jpg", link: "/shop?page=3" },
+    { title: "GABI/NETELA", image: "/assets/images/gabi1.webp", link: "/shop?page=4" },
+    { title: "Couple Clothes", image: "/assets/images/couple8.webp", link: "/shop?page=5" },
+    { title: "Children's Clothes", image: "/assets/images/child3.webp", link: "/shop?page=6" },
+    { title: "Male Clothes", image: "assets/images/men1.webp", link: "/shop?page=7" }
   ];
 
   return (
