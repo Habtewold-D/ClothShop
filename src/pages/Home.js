@@ -1,6 +1,6 @@
 // src/pages/Home.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
@@ -13,6 +13,8 @@ const Home = () => {
     { title: "Male Clothes", image: "assets/images/men1.webp", link: "/shop?page=7" }
   ];
 
+  const navigate = useNavigate();
+
   return (
     <div className="home">
       <h1>Welcome to Bernos Design</h1>
@@ -21,9 +23,12 @@ const Home = () => {
           <div key={index} className="category-card">
             <img src={category.image} alt={category.title} />
             <h3>{category.title}</h3>
-            <Link to={category.link}>
-              <button className="shop-button">Shop Now</button>
-            </Link>
+            <button
+              className="shop-button"
+              onClick={() => navigate(`/shop?category=${encodeURIComponent(category.title)}`)}
+            >
+              Shop Now
+            </button>
           </div>
         ))}
       </div>

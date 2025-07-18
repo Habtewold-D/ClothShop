@@ -1,0 +1,56 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+logs/
+*.log
+*.gz
+
+# dotenv environment variables
+.env
+.env.*.local
+.env.local
+.env.test.local
+.env.production.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE settings
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Build and output directories
+dist/
+build/
+tmp/
+temp/
+.cache/
+.next/
+out/
+coverage/
+
+# Optional: ignore test coverage tools
+.nyc_output/
+coverage/
+
+# Optional: TypeScript specific
+*.tsbuildinfo
+
+# Optional: PM2 process manager
+pids/
+*.pid
+*.seed
+
+# Optional: misc
+*.tgz

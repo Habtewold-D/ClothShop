@@ -65,38 +65,84 @@
     border-radius: 2px;
   }
   
+  .header-logo-img {
+    height: 48px;
+    width: auto;
+    display: block;
+  }
+
+.header-amharic {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+  font-family: 'Noto Sans Ethiopic', 'Segoe UI', Arial, sans-serif;
+  margin-left: 4px;
+}
+  
   /* Media Queries for Small Screens */
   @media (max-width: 768px) {
-    .nav {
-      display: none; /* Hide the nav by default */
-    }
-  
-    .nav.open {
-      display: block; /* Show the nav when the 'open' class is added */
-      position: fixed;
-      top: 10%;
-      left: 40%;
-      width: 60%;
-      height: 32%;
-      background-color: rgba(0, 0, 0, 0.9); /* Dark overlay background */
-      padding-top: 60px; /* Push the links down */
-      z-index: 9999;
-    }
-  
-    .nav.open ul {
-      flex-direction: column;
-      align-items: center;
-      padding: -20px 0;
-    }
-  
-    .nav.open a {
-      font-size: 1.5rem;
-      color: white;
-    }
-  
-    /* Show hamburger icon when on small screens */
     .hamburger {
       display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 25px;
+      cursor: pointer;
+      margin-left: 1rem;
     }
+    .nav {
+      display: none;
+    }
+    .mobile-nav-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.35);
+      z-index: 9998;
+    }
+    .mobile-nav-overlay.open {
+      display: block;
+    }
+    .nav.open {
+      display: block;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 70vw;
+      max-width: 320px;
+      height: 50vh;
+      background: #222;
+      z-index: 9999;
+      padding: 2rem 1.2rem;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.15);
+      border-radius: 0 0 0 16px;
+      overflow-y: auto;
+    }
+    .nav.open ul {
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-start;
+      width: 100%;
+    }
+    .nav.open a, .nav.open button {
+      font-size: 1.3rem;
+      color: #fff;
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+    }
+  }
+  .nav .active, .nav.open .active {
+    color: #f5a623 !important;
+  }
+  .mobile-nav-overlay {
+    display: none !important;
   }
   
