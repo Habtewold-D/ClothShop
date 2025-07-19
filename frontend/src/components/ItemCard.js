@@ -19,11 +19,11 @@ const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
       <div className="price-container">
         {hasDiscount ? (
           <>
-            <span className="discounted-price">${discounted}</span>
-            <span className="original-price" style={{ textDecoration: 'line-through', color: '#888', marginLeft: 8 }}>${price}</span>
+            <span className="discounted-price">ETB {discounted}</span>
+            <span className="original-price" style={{ textDecoration: 'line-through', color: '#888', marginLeft: 8 }}>ETB {price}</span>
           </>
         ) : (
-          <span className="discounted-price">${price}</span>
+          <span className="discounted-price">ETB {price}</span>
         )}
       </div>
     </div>
