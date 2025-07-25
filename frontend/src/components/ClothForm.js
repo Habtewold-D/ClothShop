@@ -7,7 +7,9 @@ const categories = [
   "GABI/NETELA",
   "Couple Clothes",
   "Children's Clothes",
-  "Male Clothes"
+  "Male Clothes",
+  "Bernos",
+  "Fota"
 ];
 
 const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {

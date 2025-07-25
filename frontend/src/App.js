@@ -21,19 +21,23 @@ const App = () => {
   };
   return (
     <Router>
-      <Header />
-      {isAdmin && (
-        <div style={{ textAlign: 'right', padding: '10px 30px 0 0' }}>
-          <button onClick={handleLogout} style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', cursor: 'pointer' }}>Logout</button>
+      <div className="app-flex-wrapper">
+        <Header />
+        {isAdmin && (
+          <div style={{ textAlign: 'right', padding: '10px 30px 0 0' }}>
+            <button onClick={handleLogout} style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', cursor: 'pointer' }}>Logout</button>
+          </div>
+        )}
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+          </Routes>
         </div>
-      )}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
-      </Routes>
+      </div>
       <Footer />
     </Router>
   );

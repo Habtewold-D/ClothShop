@@ -14,6 +14,8 @@ const categories = [
   { name: "Couple Clothes", value: "Couple Clothes" },
   { name: "Children's Clothes", value: "Children's Clothes" },
   { name: "Male Clothes", value: "Male Clothes" },
+  { name: "Bernos", value: "Bernos" },
+  { name: "Fota", value: "Fota" }
 ];
 
 const itemsPerPage = 12;

@@ -38,9 +38,13 @@ body, html {
 .item-card img {
   width: 100%;
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
   border-radius: 10px;
   display: block;
+  margin-left: auto;
+  margin-right: auto;
+  background: #fff;
 }
 .category-dropdown {
   padding: 0.7rem 1.2rem;
