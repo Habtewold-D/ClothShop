@@ -14,7 +14,7 @@ exports.getClothes = async (req, res) => {
 // CREATE new cloth (with image upload)
 exports.createCloth = async (req, res) => {
   try {
-    const { title, price, discountedPrice, category, popular } = req.body;
+    const { title, price, discountedPrice, category, popular, seasonal } = req.body;
     cloudinary.uploader.upload_stream({ resource_type: 'image' }, async (error, result) => {
       if (error) return res.status(500).json({ error: 'Cloudinary upload failed' });
       const newCloth = new Cloth({
@@ -24,6 +24,7 @@ exports.createCloth = async (req, res) => {
         category,
         imageUrl: result.secure_url,
         popular: popular === 'true' || popular === true,
+        seasonal: seasonal === 'true' || seasonal === true,
       });
       await newCloth.save();
       res.status(201).json(newCloth);
@@ -36,13 +37,14 @@ exports.createCloth = async (req, res) => {
 // UPDATE cloth (with optional image upload)
 exports.updateCloth = async (req, res) => {
   try {
-    const { title, price, discountedPrice, category, popular } = req.body;
+    const { title, price, discountedPrice, category, popular, seasonal } = req.body;
     const update = {
       title,
       price,
       discountedPrice,
       category,
       popular: popular === 'true' || popular === true,
+      seasonal: seasonal === 'true' || seasonal === true,
     };
     if (req.file) {
       cloudinary.uploader.upload_stream({ resource_type: 'image' }, async (error, result) => {

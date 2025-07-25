@@ -7,12 +7,12 @@ const Home = () => {
   const categories = [
     { title: "Women's Clothes", image: "assets/images/women1.webp", link: "/shop?category=Women's%20Clothes" },
     { title: "Family Clothes", image: "assets/images/family3.jpg", link: "/shop?category=Family%20Clothes" },
-    { title: "GABI/NETELA", image: "/assets/images/gabi1.webp", link: "/shop?category=GABI/NETELA" },
+    { title: "GABI/NETELA/KUTA", image: "/assets/images/gabi1.webp", link: "/shop?category=GABI/NETELA" },
     { title: "Couple Clothes", image: "/assets/images/couple8.webp", link: "/shop?category=Couple%20Clothes" },
     { title: "Children's Clothes", image: "/assets/images/child3.webp", link: "/shop?category=Children's%20Clothes" },
     { title: "Male Clothes", image: "assets/images/men1.webp", link: "/shop?category=Male%20Clothes" },
-    { title: "Bernos", image: "/assets/images/Bernos.png", link: "/shop?category=Bernos" },
-    { title: "Fota", image: "/assets/images/cloth.jpg", link: "/shop?category=Fota" }
+    { title: "BERNOS", image: "/assets/images/Bernos.png", link: "/shop?category=Bernos" },
+    { title: "FOTA", image: "/assets/images/cloth.jpg", link: "/shop?category=Fota" }
   ];
 
   const navigate = useNavigate();

@@ -7,6 +7,7 @@ import ClothForm from '../components/ClothForm';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const categories = [
+  { name: "Seasonal", value: "seasonal" },
   { name: "Popular", value: "" },
   { name: "Women's Clothes", value: "Women's Clothes" },
   { name: "Family Clothes", value: "Family Clothes" },
@@ -62,7 +63,9 @@ const Shop = () => {
   useEffect(() => {
     let filtered = clothes;
     if (currentCategory === "") {
-      filtered = clothes.filter(item => item.popular);
+      filtered = clothes.filter(item => item.popular && !item.seasonal);
+    } else if (currentCategory === "seasonal") {
+      filtered = clothes.filter(item => item.seasonal);
     } else if (currentCategory) {
       filtered = clothes.filter(item => item.category === currentCategory);
     }
@@ -145,6 +148,15 @@ const Shop = () => {
     setEditLoading(false);
   };
 
+  // Compute if there are any seasonal items
+  const hasSeasonal = clothes.some(item => item.seasonal);
+  const filterCategories = hasSeasonal
+    ? [
+        { name: "Seasonal", value: "seasonal" },
+        ...categories.slice(1)
+      ]
+    : categories.slice(1);
+
   return (
     <div className="shop">
       <div className="shop-header-row">
@@ -163,7 +175,7 @@ const Shop = () => {
           value={currentCategory}
           onChange={e => setCurrentCategory(e.target.value)}
         >
-          {categories.map((cat, idx) => (
+          {filterCategories.map((cat, idx) => (
             <option key={cat.value || 'popular'} value={cat.value}>{cat.name}</option>
           ))}
         </select>
@@ -187,6 +199,23 @@ const Shop = () => {
         <div className="loading">Loading...</div>
       ) : (
         <>
+          {currentCategory === "" && clothes.some(item => item.seasonal) && (
+            <>
+              <h2 style={{marginTop: 0}}>Seasonal Offers</h2>
+              <div className="items-grid">
+                {clothes.filter(item => item.seasonal).map(item => (
+                  <ItemCard
+                    key={item._id}
+                    item={item}
+                    isAdmin={isAdmin}
+                    onEdit={() => handleEdit(item)}
+                    onDelete={() => handleDelete(item)}
+                  />
+                ))}
+              </div>
+              <h2>Popular</h2>
+            </>
+          )}
           <div className="items-grid">
             {currentItems.map(item => (
               <ItemCard

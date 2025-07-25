@@ -32,7 +32,7 @@ const Header = () => {
     <header className="header">
       <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <Link to="/">
-          <img src="/assets/images/Bernos.png" alt="Bernos Logo" className="header-logo-img" />
+          <img src="/assets/images/bernos Logo.jpg" alt="Bernos Logo" className="header-logo-img" />
         </Link>
         <span className="header-amharic">በርኖስ - Bernos</span>
       </div>

@@ -7,6 +7,7 @@ const ClothSchema = new mongoose.Schema({
   category: { type: String, required: true },
   imageUrl: { type: String, required: true },
   popular: { type: Boolean, default: false },
+  seasonal: { type: Boolean, default: false },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Cloth', ClothSchema); 

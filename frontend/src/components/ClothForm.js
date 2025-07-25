@@ -20,6 +20,7 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(initialData.imageUrl || '');
   const [popular, setPopular] = useState(initialData.popular || false);
+  const [seasonal, setSeasonal] = useState(initialData.seasonal || false);
   const fileInputRef = useRef();
 
   const handleImageChange = (e) => {
@@ -43,6 +44,7 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
     formData.append('discountedPrice', discountedPrice);
     formData.append('category', category);
     formData.append('popular', popular);
+    formData.append('seasonal', seasonal);
     if (image) formData.append('image', image);
     onSubmit(formData);
   };
@@ -85,6 +87,14 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
               onChange={e => setPopular(e.target.checked)}
             />
             Popular
+          </label>
+          <label className="seasonal-checkbox">
+            <input
+              type="checkbox"
+              checked={seasonal}
+              onChange={e => setSeasonal(e.target.checked)}
+            />
+            Seasonal
           </label>
           <input
             type="file"
