@@ -150,6 +150,12 @@ const Shop = () => {
 
   // Compute if there are any seasonal items
   const hasSeasonal = clothes.some(item => item.seasonal);
+  // If no seasonal, default to 'Popular' filter
+  React.useEffect(() => {
+    if (!hasSeasonal && currentCategory === 'seasonal') {
+      setCurrentCategory('');
+    }
+  }, [hasSeasonal, currentCategory]);
   const filterCategories = hasSeasonal
     ? [
         { name: "Seasonal", value: "seasonal" },
@@ -161,7 +167,7 @@ const Shop = () => {
     <div className="shop">
       <div className="shop-header-row">
         <div className="centered-category-title">
-          <h1>{currentCategory ? currentCategory : 'Popular'}</h1>
+          <h1>{currentCategory ? (currentCategory === 'seasonal' ? 'Seasonal Offers' : currentCategory) : 'Popular'}</h1>
         </div>
         {isAdmin && (
           <button className="add-cloth-btn-top" onClick={handleAdd}>+ Add Cloth</button>
@@ -199,7 +205,7 @@ const Shop = () => {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          {currentCategory === "" && clothes.some(item => item.seasonal) && (
+          {currentCategory === "" && hasSeasonal && filterCategories[0].value === "seasonal" && (
             <>
               <h2 style={{marginTop: 0}}>Seasonal Offers</h2>
               <div className="items-grid">
