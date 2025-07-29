@@ -15,20 +15,29 @@ exports.getClothes = async (req, res) => {
 exports.createCloth = async (req, res) => {
   try {
     const { title, price, discountedPrice, category, popular, seasonal } = req.body;
-    cloudinary.uploader.upload_stream({ resource_type: 'image' }, async (error, result) => {
-      if (error) return res.status(500).json({ error: 'Cloudinary upload failed' });
-      const newCloth = new Cloth({
-        title,
-        price,
-        discountedPrice,
-        category,
-        imageUrl: result.secure_url,
-        popular: popular === 'true' || popular === true,
-        seasonal: seasonal === 'true' || seasonal === true,
-      });
-      await newCloth.save();
-      res.status(201).json(newCloth);
-    }).end(req.file.buffer);
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'No images uploaded' });
+    }
+    const imageUploadPromises = req.files.map(file =>
+      new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+          if (error) reject(error);
+          else resolve(result.secure_url);
+        }).end(file.buffer);
+      })
+    );
+    const imageUrls = await Promise.all(imageUploadPromises);
+    const newCloth = new Cloth({
+      title,
+      price,
+      discountedPrice,
+      category,
+      images: imageUrls,
+      popular: popular === 'true' || popular === true,
+      seasonal: seasonal === 'true' || seasonal === true,
+    });
+    await newCloth.save();
+    res.status(201).json(newCloth);
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }
@@ -46,17 +55,20 @@ exports.updateCloth = async (req, res) => {
       popular: popular === 'true' || popular === true,
       seasonal: seasonal === 'true' || seasonal === true,
     };
-    if (req.file) {
-      cloudinary.uploader.upload_stream({ resource_type: 'image' }, async (error, result) => {
-        if (error) return res.status(500).json({ error: 'Cloudinary upload failed' });
-        update.imageUrl = result.secure_url;
-        const cloth = await Cloth.findByIdAndUpdate(req.params.id, update, { new: true });
-        res.json(cloth);
-      }).end(req.file.buffer);
-    } else {
-      const cloth = await Cloth.findByIdAndUpdate(req.params.id, update, { new: true });
-      res.json(cloth);
+    if (req.files && req.files.length > 0) {
+      const imageUploadPromises = req.files.map(file =>
+        new Promise((resolve, reject) => {
+          cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
+            if (error) reject(error);
+            else resolve(result.secure_url);
+          }).end(file.buffer);
+        })
+      );
+      const imageUrls = await Promise.all(imageUploadPromises);
+      update.images = imageUrls;
     }
+    const cloth = await Cloth.findByIdAndUpdate(req.params.id, update, { new: true });
+    res.json(cloth);
   } catch (err) {
     res.status(500).json({ error: 'Server error' });
   }

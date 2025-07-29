@@ -25,10 +25,10 @@ function auth(req, res, next) {
 router.get('/', clothesController.getClothes);
 
 // POST new cloth (with image upload)
-router.post('/', auth, upload.single('image'), clothesController.createCloth);
+router.post('/', auth, upload.array('images', 5), clothesController.createCloth);
 
 // PUT edit cloth (with optional image upload)
-router.put('/:id', auth, upload.single('image'), clothesController.updateCloth);
+router.put('/:id', auth, upload.array('images', 5), clothesController.updateCloth);
 
 // DELETE cloth
 router.delete('/:id', auth, clothesController.deleteCloth);

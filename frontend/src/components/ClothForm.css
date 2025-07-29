@@ -64,4 +64,16 @@
   margin: 0.5rem auto;
   display: block;
   border: 1px solid #eee;
+}
+.image-preview-multi {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+}
+.image-preview-multi .image-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
 } 

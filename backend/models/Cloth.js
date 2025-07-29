@@ -5,7 +5,7 @@ const ClothSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   discountedPrice: { type: Number },
   category: { type: String, required: true },
-  imageUrl: { type: String, required: true },
+  images: [{ type: String, required: true }],
   popular: { type: Boolean, default: false },
   seasonal: { type: Boolean, default: false },
 }, { timestamps: true });

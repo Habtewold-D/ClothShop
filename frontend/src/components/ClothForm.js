@@ -17,27 +17,32 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
   const [price, setPrice] = useState(initialData.price || '');
   const [discountedPrice, setDiscountedPrice] = useState(initialData.discountedPrice || '');
   const [category, setCategory] = useState(initialData.category || categories[0]);
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(initialData.imageUrl || '');
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState(initialData.images || []);
   const [popular, setPopular] = useState(initialData.popular || false);
   const [seasonal, setSeasonal] = useState(initialData.seasonal || false);
   const fileInputRef = useRef();
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result);
-      reader.readAsDataURL(file);
+    const files = Array.from(e.target.files);
+    setImages(files);
+    if (files.length > 0) {
+      const newPreviews = files.map(file => {
+        const reader = new FileReader();
+        return new Promise(resolve => {
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      });
+      Promise.all(newPreviews).then(setPreviews);
     } else {
-      setPreview('');
+      setPreviews([]);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !price || !category || (!image && !initialData.imageUrl)) return;
+    if (!title || !price || !category || (images.length === 0 && (!initialData.images || initialData.images.length === 0))) return;
     const formData = new FormData();
     formData.append('title', title);
     formData.append('price', price);
@@ -45,7 +50,7 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
     formData.append('category', category);
     formData.append('popular', popular);
     formData.append('seasonal', seasonal);
-    if (image) formData.append('image', image);
+    images.forEach(img => formData.append('images', img));
     onSubmit(formData);
   };
 
@@ -102,11 +107,18 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
             ref={fileInputRef}
             onChange={handleImageChange}
             style={{ display: 'none' }}
+            multiple
           />
           <button type="button" onClick={() => fileInputRef.current.click()}>
-            {preview ? 'Change Image' : 'Upload Image'}
+            {previews.length > 0 ? 'Change Images' : 'Upload Images'}
           </button>
-          {preview && <img className="image-preview" src={preview} alt="Preview" />}
+          {previews.length > 0 && (
+            <div className="image-preview-multi">
+              {previews.map((src, idx) => (
+                <img key={idx} className="image-preview" src={src} alt={`Preview ${idx + 1}`} />
+              ))}
+            </div>
+          )}
           <button type="submit" disabled={loading}>{loading ? 'Saving...' : (initialData._id ? 'Save Changes' : 'Add Cloth')}</button>
         </form>
       </div>

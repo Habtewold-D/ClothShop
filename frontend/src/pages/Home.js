@@ -5,14 +5,14 @@ import './Home.css';
 
 const Home = () => {
   const categories = [
-    { title: "Women's Clothes", image: "assets/images/women1.webp", link: "/shop?category=Women's%20Clothes" },
-    { title: "Family Clothes", image: "assets/images/family3.jpg", link: "/shop?category=Family%20Clothes" },
-    { title: "GABI/NETELA/KUTA", image: "/assets/images/gabi1.webp", link: "/shop?category=GABI/NETELA" },
-    { title: "Couple Clothes", image: "/assets/images/couple8.webp", link: "/shop?category=Couple%20Clothes" },
-    { title: "Children's Clothes", image: "/assets/images/child3.webp", link: "/shop?category=Children's%20Clothes" },
-    { title: "Male Clothes", image: "assets/images/men1.webp", link: "/shop?category=Male%20Clothes" },
-    { title: "BERNOS", image: "/assets/images/bernos.jpg", link: "/shop?category=Bernos" },
-    { title: "FOTA", image: "/assets/images/fota.webp", link: "/shop?category=Fota" }
+    { title: "Women's Clothes", image: "assets/images/women1.webp", categoryValue: "Women's Clothes" },
+    { title: "Family Clothes", image: "assets/images/family3.jpg", categoryValue: "Family Clothes" },
+    { title: "GABI/NETELA/KUTA", image: "/assets/images/gabi1.webp", categoryValue: "GABI/NETELA" },
+    { title: "Couple Clothes", image: "/assets/images/couple8.webp", categoryValue: "Couple Clothes" },
+    { title: "Children's Clothes", image: "/assets/images/child3.webp", categoryValue: "Children's Clothes" },
+    { title: "Male Clothes", image: "assets/images/men1.webp", categoryValue: "Male Clothes" },
+    { title: "BERNOS", image: "/assets/images/bernos.jpg", categoryValue: "Bernos" },
+    { title: "FOTA", image: "/assets/images/fota.webp", categoryValue: "Fota" }
   ];
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Home = () => {
             <h3>{category.title}</h3>
             <button
               className="shop-button"
-              onClick={() => navigate(`/shop?category=${encodeURIComponent(category.title)}`)}
+              onClick={() => navigate(`/shop?category=${encodeURIComponent(category.categoryValue)}`)}
             >
               Shop Now
             </button>

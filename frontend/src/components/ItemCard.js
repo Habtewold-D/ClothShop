@@ -14,7 +14,15 @@ const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
           <button className="delete-btn" onClick={onDelete}>Delete</button>
         </div>
       )}
-      <img src={item.imageUrl} alt={item.title} />
+      {Array.isArray(item.images) && item.images.length > 0 ? (
+        <div className="item-images-gallery">
+          {item.images.map((img, idx) => (
+            <img key={idx} src={img} alt={item.title + ' ' + (idx + 1)} className="item-image-multi" />
+          ))}
+        </div>
+      ) : (
+        <img src={item.imageUrl} alt={item.title} />
+      )}
       <h2>{item.title}</h2>
       <div className="price-container">
         {hasDiscount ? (
