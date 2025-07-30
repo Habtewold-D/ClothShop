@@ -13,7 +13,8 @@ const categories = [
   { name: "Family Clothes", value: "Family Clothes" },
   { name: "GABI/NETELA", value: "GABI/NETELA" },
   { name: "Couple Clothes", value: "Couple Clothes" },
-  { name: "Children's Clothes", value: "Children's Clothes" },
+  { name: "Kids Clothes", value: "Kids Clothes" },
+  { name: "ነጭ በነጭ", value: "ነጭ በነጭ" },
   { name: "Male Clothes", value: "Male Clothes" },
   { name: "Bernos", value: "Bernos" },
   { name: "Fota", value: "Fota" }
@@ -25,7 +26,7 @@ const Shop = () => {
   const [clothes, setClothes] = useState([]);
   const [filteredClothes, setFilteredClothes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentCategory, setCurrentCategory] = useState(categories[0].value);
+  const [currentCategory, setCurrentCategory] = useState(""); // Start with empty string
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -37,6 +38,15 @@ const Shop = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Compute if there are any seasonal items
+  const hasSeasonal = clothes.some(item => item.seasonal);
+  const filterCategories = hasSeasonal
+    ? [
+        { name: "Seasonal", value: "seasonal" },
+        ...categories.slice(1)
+      ]
+    : categories.slice(1);
 
   useEffect(() => {
     const fetchClothes = async () => {
@@ -54,19 +64,45 @@ const Shop = () => {
   }, []);
 
   useEffect(() => {
-    // On mount, check for ?category= in the URL
     const params = new URLSearchParams(location.search);
     const cat = params.get('category');
-    if (cat) setCurrentCategory(cat);
-  }, [location.search]);
+    
+    if (cat) {
+      // Check if the category exists in our filter options
+      const found = filterCategories.find(c => c.value === cat);
+      if (found) {
+        setCurrentCategory(cat);
+      } else {
+        // If category doesn't exist, default to seasonal if available, otherwise popular
+        setCurrentCategory(hasSeasonal ? "seasonal" : "");
+      }
+    } else if (currentCategory === "") {
+      // Only set default if currentCategory is still empty (initial load)
+      // Don't override user selections
+      setCurrentCategory(hasSeasonal ? "seasonal" : "");
+    }
+  }, [location.search]); // Only depend on location.search
+
+  // Separate useEffect to handle initial default when data loads
+  useEffect(() => {
+    if (clothes.length > 0 && currentCategory === "" && !location.search) {
+      // Data has loaded, no category is set, and no URL parameters
+      // Set default based on whether seasonal items exist
+      const defaultCategory = hasSeasonal ? "seasonal" : "";
+      setCurrentCategory(defaultCategory);
+    }
+  }, [clothes, hasSeasonal]); // Removed currentCategory and location.search to prevent interference
 
   useEffect(() => {
     let filtered = clothes;
     if (currentCategory === "") {
-      filtered = clothes.filter(item => item.popular && !item.seasonal);
+      // Popular filter - show items that are popular (can also be seasonal)
+      filtered = clothes.filter(item => item.popular);
     } else if (currentCategory === "seasonal") {
+      // Seasonal filter - show items that are seasonal (can also be popular)
       filtered = clothes.filter(item => item.seasonal);
     } else if (currentCategory) {
+      // Category filter - show items in specific category
       filtered = clothes.filter(item => item.category === currentCategory);
     }
     setFilteredClothes(filtered);
@@ -100,11 +136,12 @@ const Shop = () => {
           Authorization: `Bearer ${localStorage.getItem('adminToken')}`
         }
       });
-      // Refresh clothes list
-      const updated = await fetch(`${API_BASE_URL}/clothes`);
-      setClothes(await updated.json());
-    } catch (err) {}
+      setClothes(clothes.filter(c => c._id !== item._id));
+    } catch (err) {
+      alert('Failed to delete item');
+    }
   };
+
   const handleAdd = () => setShowAddModal(true);
 
   const handleAddSubmit = async (formData) => {
@@ -118,12 +155,15 @@ const Shop = () => {
         body: formData
       });
       if (res.ok) {
+        const newCloth = await res.json();
+        setClothes([...clothes, newCloth]);
         setShowAddModal(false);
-        // Refresh clothes list
-        const updated = await fetch(`${API_BASE_URL}/clothes`);
-        setClothes(await updated.json());
+      } else {
+        alert('Failed to add item');
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('Failed to add item');
+    }
     setAddLoading(false);
   };
 
@@ -138,30 +178,22 @@ const Shop = () => {
         body: formData
       });
       if (res.ok) {
+        const updatedCloth = await res.json();
+        setClothes(clothes.map(c => c._id === editItem._id ? updatedCloth : c));
         setShowEditModal(false);
         setEditItem(null);
-        // Refresh clothes list
-        const updated = await fetch(`${API_BASE_URL}/clothes`);
-        setClothes(await updated.json());
+      } else {
+        alert('Failed to update item');
       }
-    } catch (err) {}
+    } catch (err) {
+      alert('Failed to update item');
+    }
     setEditLoading(false);
   };
 
-  // Compute if there are any seasonal items
-  const hasSeasonal = clothes.some(item => item.seasonal);
-  // If no seasonal, default to 'Popular' filter
-  React.useEffect(() => {
-    if (!hasSeasonal && currentCategory === 'seasonal') {
-      setCurrentCategory('');
-    }
-  }, [hasSeasonal, currentCategory]);
-  const filterCategories = hasSeasonal
-    ? [
-        { name: "Seasonal", value: "seasonal" },
-        ...categories.slice(1)
-      ]
-    : categories.slice(1);
+  const handleCategoryChange = (e) => {
+    setCurrentCategory(e.target.value);
+  };
 
   return (
     <div className="shop">
@@ -179,7 +211,7 @@ const Shop = () => {
           id="category-dropdown"
           className="category-dropdown"
           value={currentCategory}
-          onChange={e => setCurrentCategory(e.target.value)}
+          onChange={handleCategoryChange}
         >
           {filterCategories.map((cat, idx) => (
             <option key={cat.value || 'popular'} value={cat.value}>{cat.name}</option>
@@ -205,11 +237,16 @@ const Shop = () => {
         <div className="loading">Loading...</div>
       ) : (
         <>
-          {currentCategory === "" && hasSeasonal && filterCategories[0].value === "seasonal" && (
+          {filteredClothes.length === 0 ? (
+            <div className="no-items-message">
+              <h3>No items found</h3>
+              <p>There are no clothes available in the "{currentCategory ? (currentCategory === 'seasonal' ? 'Seasonal Offers' : currentCategory) : 'Popular'}" category at the moment.</p>
+              <p>Please try selecting a different category or check back later for new arrivals.</p>
+            </div>
+          ) : (
             <>
-              <h2 style={{marginTop: 0}}>Seasonal Offers</h2>
               <div className="items-grid">
-                {clothes.filter(item => item.seasonal).map(item => (
+                {currentItems.map(item => (
                   <ItemCard
                     key={item._id}
                     item={item}
@@ -219,27 +256,15 @@ const Shop = () => {
                   />
                 ))}
               </div>
-              <h2>Popular</h2>
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={filteredClothes.length}
+                paginate={paginate}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
             </>
           )}
-          <div className="items-grid">
-            {currentItems.map(item => (
-              <ItemCard
-                key={item._id}
-                item={item}
-                isAdmin={isAdmin}
-                onEdit={() => handleEdit(item)}
-                onDelete={() => handleDelete(item)}
-              />
-            ))}
-          </div>
-          <Pagination
-            itemsPerPage={itemsPerPage}
-            totalItems={filteredClothes.length}
-            paginate={paginate}
-            currentPage={currentPage}
-            totalPages={totalPages}
-          />
         </>
       )}
     </div>
