@@ -25,6 +25,18 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
   const [seasonal, setSeasonal] = useState(initialData.seasonal || false);
   const fileInputRef = useRef();
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+  
+  // Track the final state of images with their types
+  const [imageStates, setImageStates] = useState(() => {
+    if (initialData.images) {
+      return initialData.images.map((url, index) => ({
+        type: 'original',
+        url: url,
+        originalIndex: index
+      }));
+    }
+    return [];
+  });
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
@@ -34,6 +46,7 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
         // Replace specific image
         const newReplacedImages = new Map(replacedImages);
         const newPreviews = [...previews];
+        const newImageStates = [...imageStates];
         
         // Store the replacement
         newReplacedImages.set(selectedImageIndex, files[0]);
@@ -42,7 +55,16 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
         const reader = new FileReader();
         reader.onloadend = () => {
           newPreviews[selectedImageIndex] = reader.result;
+          // Update image state to show it's replaced
+          if (newImageStates[selectedImageIndex]) {
+            newImageStates[selectedImageIndex] = {
+              type: 'replaced',
+              file: files[0],
+              originalIndex: newImageStates[selectedImageIndex].originalIndex
+            };
+          }
           setPreviews(newPreviews);
+          setImageStates(newImageStates);
           setSelectedImageIndex(null);
         };
         reader.readAsDataURL(files[0]);
@@ -61,6 +83,12 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
         
         Promise.all(newPreviews).then(newPreviewUrls => {
           setPreviews([...previews, ...newPreviewUrls]);
+          // Add new image states
+          const newImageStates = [...imageStates, ...files.map(file => ({
+            type: 'additional',
+            file: file
+          }))];
+          setImageStates(newImageStates);
         });
       }
     }
@@ -74,40 +102,45 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
   };
 
   const handleRemoveImage = (index) => {
+    // Create new arrays/maps without the removed image
+    const newPreviews = [...previews];
     const newReplacedImages = new Map(replacedImages);
     const newAdditionalImages = [...additionalImages];
-    const newPreviews = [...previews];
     const newRemovedOriginalIndices = new Set(removedOriginalIndices);
+    const newImageStates = [...imageStates];
     
-    // Check if this is an original image being removed
+    // Remove the image from previews and image states
+    newPreviews.splice(index, 1);
+    newImageStates.splice(index, 1);
+    
+    // Handle the removed image based on its type
     const originalImageCount = initialData.images ? initialData.images.length : 0;
+    
     if (index < originalImageCount) {
-      // This is an original image being removed
+      // This was an original image - mark it as removed
       newRemovedOriginalIndices.add(index);
+      // Remove from replaced images if it was replaced
+      newReplacedImages.delete(index);
     } else {
-      // This is an additional image being removed
-      const additionalImageIndex = index - originalImageCount;
-      if (additionalImageIndex >= 0 && additionalImageIndex < newAdditionalImages.length) {
-        newAdditionalImages.splice(additionalImageIndex, 1);
+      // This was an additional image - remove from additional images
+      const additionalIndex = index - originalImageCount;
+      if (additionalIndex >= 0 && additionalIndex < newAdditionalImages.length) {
+        newAdditionalImages.splice(additionalIndex, 1);
       }
     }
     
-    // Remove from replaced images if it exists there
-    if (newReplacedImages.has(index)) {
-      newReplacedImages.delete(index);
-    }
-    
-    // Remove from previews
-    newPreviews.splice(index, 1);
-    
+    // Update all state
+    setPreviews(newPreviews);
     setReplacedImages(newReplacedImages);
     setAdditionalImages(newAdditionalImages);
     setRemovedOriginalIndices(newRemovedOriginalIndices);
-    setPreviews(newPreviews);
+    setImageStates(newImageStates);
     
+    // Reset selected index if it was the removed image
     if (selectedImageIndex === index) {
       setSelectedImageIndex(null);
     } else if (selectedImageIndex > index) {
+      // Adjust selected index if it was after the removed image
       setSelectedImageIndex(selectedImageIndex - 1);
     }
   };
@@ -136,33 +169,31 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
     if (initialData._id) {
       formData.append('_id', initialData._id);
       
-      // Create a map of all current images with their final URLs
-      const finalImages = [];
+      const keptOriginalImages = [];
+      const newImages = [];
       
-      // Process all previews in order
-      previews.forEach((preview, index) => {
-        if (replacedImages.has(index)) {
-          // This image was replaced - add the file
-          finalImages.push({ type: 'file', file: replacedImages.get(index) });
-        } else if (index < (initialData.images ? initialData.images.length : 0) && !removedOriginalIndices.has(index)) {
-          // This is an existing image that wasn't replaced or removed
-          finalImages.push({ type: 'url', url: initialData.images[index] });
-        } else if (index >= (initialData.images ? initialData.images.length : 0)) {
-          // This is a new additional image
-          const additionalIndex = index - (initialData.images ? initialData.images.length : 0);
-          if (additionalImages[additionalIndex]) {
-            finalImages.push({ type: 'file', file: additionalImages[additionalIndex] });
-          }
+      // Process each image state to determine what to keep
+      imageStates.forEach((imageState) => {
+        if (imageState.type === 'original') {
+          // This is an original image that wasn't removed - keep it
+          keptOriginalImages.push(imageState.url);
+        } else if (imageState.type === 'replaced') {
+          // This is a replaced image - add the new file
+          newImages.push(imageState.file);
+        } else if (imageState.type === 'additional') {
+          // This is an additional image - add the new file
+          newImages.push(imageState.file);
         }
       });
       
-      // Add files to form data
-      finalImages.forEach((item, index) => {
-        if (item.type === 'file') {
-          formData.append('images', item.file);
-        } else if (item.type === 'url') {
-          formData.append('existingImages', item.url);
-        }
+      // Add kept original images
+      keptOriginalImages.forEach(url => {
+        formData.append('existingImages', url);
+      });
+      
+      // Add new/replaced images
+      newImages.forEach(file => {
+        formData.append('images', file);
       });
       
     } else {
