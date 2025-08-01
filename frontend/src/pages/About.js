@@ -53,7 +53,7 @@ const About = () => {
           <div className="section">
             <p>
               At <strong>Bernos Design</strong>, we are passionate about sharing the beauty of Ethiopian traditional clothing with the world. Our commitment to <strong>quality</strong>, <strong>authenticity</strong>, and <strong>cultural appreciation</strong> sets us apart in the market. We invite you to join us on this journey of celebrating Ethiopian heritage through fashion.
-            </p>
+          </p>
           </div>
         </div>
       </div>

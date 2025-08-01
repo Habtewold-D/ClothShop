@@ -9,7 +9,7 @@ const Home = () => {
     { title: "Family Clothes", image: "assets/images/family.jpg", categoryValue: "Family Clothes" },
     { title: "GABI/NETELA/KUTA", image: "/assets/images/gabi1.webp", categoryValue: "GABI/NETELA" },
     { title: "Couple Clothes", image: "/assets/images/couple.jpg", categoryValue: "Couple Clothes" },
-    { title: "Kids Clothes", image: "/assets/images/child.JPG", categoryValue: "Kids Clothes" },
+    { title: "Kids Clothes", image: "/assets/images/child3.webp", categoryValue: "Kids Clothes" },
     { title: "ነጭ በነጭ", image: "/assets/images/nechbenech.jpg", categoryValue: "ነጭ በነጭ" },
     { title: "Male Clothes", image: "assets/images/men.jpg", categoryValue: "Male Clothes" },
     { title: "BERNOS", image: "/assets/images/bernos.jpg", categoryValue: "Bernos" },

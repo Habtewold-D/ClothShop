@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './Footer.css';
-import { FaFacebookF, FaInstagram, FaTelegram } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaTelegram, FaWhatsapp } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 
 const Footer = () => {
@@ -31,6 +31,7 @@ const Footer = () => {
             <a href="https://www.instagram.com/bernosdesign2024?igsh=MWJtbzNoYjd3MGRqZg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
             <a href="https://www.tiktok.com/@bernosdesign" target="_blank" rel="noopener noreferrer"><FaTiktok /></a>
             <a href="https://t.me/Bernosdesign2016" target="_blank" rel="noopener noreferrer"><FaTelegram /></a>
+            <a href="https://wa.me/251910752375" target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>
           </div>
         </div>
       </div>

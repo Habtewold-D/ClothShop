@@ -25,7 +25,7 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
   const [seasonal, setSeasonal] = useState(initialData.seasonal || false);
   const fileInputRef = useRef();
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-  
+
   // Track the final state of images with their types
   const [imageStates, setImageStates] = useState(() => {
     if (initialData.images) {
