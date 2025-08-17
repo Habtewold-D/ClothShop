@@ -6,12 +6,13 @@ import { API_BASE_URL } from '../api';
 
 const Home = () => {
   const categories = [
-    { title: "Women's Clothes", image: "assets/images/women1.webp", categoryValue: "Women's Clothes" },
-    { title: "Family Clothes", image: "assets/images/family3.jpg", categoryValue: "Family Clothes" },
+    { title: "Women's Clothes", image: "assets/images/women.jpg", categoryValue: "Women's Clothes" },
+    { title: "Family Clothes", image: "assets/images/family.jpg", categoryValue: "Family Clothes" },
     { title: "GABI/NETELA/KUTA", image: "/assets/images/gabi1.webp", categoryValue: "GABI/NETELA" },
-    { title: "Couple Clothes", image: "/assets/images/couple8.webp", categoryValue: "Couple Clothes" },
-    { title: "Children's Clothes", image: "/assets/images/child3.webp", categoryValue: "Children's Clothes" },
-    { title: "Male Clothes", image: "assets/images/men1.webp", categoryValue: "Male Clothes" },
+    { title: "Couple Clothes", image: "/assets/images/couple.jpg", categoryValue: "Couple Clothes" },
+    { title: "Kids Clothes", image: "/assets/images/child3.webp", categoryValue: "Kids Clothes" },
+    { title: "ነጭ በነጭ", image: "/assets/images/nechbenech.jpg", categoryValue: "ነጭ በነጭ" },
+    { title: "Male Clothes", image: "assets/images/men.jpg", categoryValue: "Male Clothes" },
     { title: "BERNOS", image: "/assets/images/bernos.jpg", categoryValue: "Bernos" },
     { title: "FOTA", image: "/assets/images/fota.webp", categoryValue: "Fota" }
   ];

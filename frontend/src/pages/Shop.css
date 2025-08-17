@@ -18,6 +18,7 @@
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+    position: relative;
 }
 
 .item-card:hover {
@@ -25,10 +26,106 @@
 }
 
 .item-card img {
-    width: 250px; /* Increased width */
-    height: 250px; /* Increased height */
-    object-fit: cover; /* Ensures image covers the area without distortion */
+    width: 100%;
+    height: 400px; /* Much larger height */
+    object-fit: contain; /* Prevents cropping */
+    object-position: center;
     border-radius: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+}
+
+/* Carousel styles */
+.item-image-carousel {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.item-image-main {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+/* Carousel navigation buttons */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(128, 128, 128, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-weight: bold;
+}
+
+.carousel-btn:hover {
+    background: rgba(128, 128, 128, 1);
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    color: #fff;
+}
+
+.prev-btn {
+    left: 15px;
+}
+
+.next-btn {
+    right: 15px;
+}
+
+/* Carousel dots */
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    padding: 6px 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.dot.active {
+    background: #f5a623;
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.3);
 }
 
 .item-info {
@@ -43,17 +140,33 @@
 }
 
 .discount-price {
-    font-size: 1.5rem;
+    font-size: 2.8rem;
     font-weight: bold;
     color: #f5a623; /* Discount price color */
     text-decoration: line-through;
 }
 
 .current-price {
-    font-size: 1.2rem;
+    font-size: 2.4rem;
     font-weight: normal;
     color: black;
     text-decoration: none;
+}
+
+/* Make item titles larger */
+.item-card h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin: 15px 0 10px 0;
+    color: #333;
+    text-align: center;
+}
+
+.item-card p {
+    font-size: 1.3rem;
+    color: #666;
+    text-align: center;
+    margin: 8px 0;
 }
 
 /* Media Queries for responsive design */
@@ -67,6 +180,14 @@
     .items-grid {
         grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
     }
+    
+    .item-card img {
+        height: 300px;
+    }
+    
+    .item-image-carousel {
+        height: 300px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -77,4 +198,58 @@
     .item-card {
         padding: 10px;
     }
+    
+    .item-card img {
+        height: 250px;
+    }
+    
+    .item-image-carousel {
+        height: 250px;
+    }
+    
+    .carousel-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+}
+
+/* No items found message styling */
+.no-items-message {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 40px auto;
+    max-width: 600px;
+    border: 2px dashed #f5a623;
+}
+
+.no-items-message h3 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.no-items-message p {
+    font-size: 1.2rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.no-items-message p:first-of-type {
+    font-weight: 500;
+    color: #555;
+}
+
+/* Loading message styling */
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 1.5rem;
+    color: #666;
+    font-weight: 500;
 }

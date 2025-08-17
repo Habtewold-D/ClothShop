@@ -2,7 +2,7 @@
 import React from 'react';
 import './Contact.css';
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
-import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaTelegram } from 'react-icons/fa';
+import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube, FaTelegram, FaWhatsapp } from 'react-icons/fa';
 import { FaTiktok } from 'react-icons/fa6';
 
 const Contact = () => {
@@ -30,6 +30,7 @@ const Contact = () => {
           <a href="https://www.instagram.com/bernosdesign2024?igsh=MWJtbzNoYjd3MGRqZg%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
           <a href="https://www.tiktok.com/@bernosdesign" target="_blank" rel="noopener noreferrer"><FaTiktok /></a>
           <a href="https://t.me/Bernosdesign2016" target="_blank" rel="noopener noreferrer"><FaTelegram /></a>
+          <a href="https://wa.me/251910752375" target="_blank" rel="noopener noreferrer"><FaWhatsapp /></a>
         </div>
       </div>
     </div>

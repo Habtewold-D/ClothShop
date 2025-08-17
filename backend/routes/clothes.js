@@ -11,12 +11,15 @@ const upload = multer({ storage });
 // Auth middleware
 function auth(req, res, next) {
   const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: 'No token' });
+  if (!authHeader) {
+    return res.status(401).json({ error: 'No token' });
+  }
+  
   const token = authHeader.split(' ')[1];
   try {
     jwt.verify(token, process.env.JWT_SECRET);
     next();
-  } catch {
+  } catch (err) {
     res.status(401).json({ error: 'Invalid token' });
   }
 }
@@ -29,6 +32,12 @@ router.post('/', auth, upload.array('images', 5), clothesController.createCloth)
 
 // PUT edit cloth (with optional image upload)
 router.put('/:id', auth, upload.array('images', 5), clothesController.updateCloth);
+
+// Error handling middleware
+router.use((err, req, res, next) => {
+  console.error('Route error:', err);
+  res.status(500).json({ error: 'Route error', message: err.message });
+});
 
 // DELETE cloth
 router.delete('/:id', auth, clothesController.deleteCloth);

@@ -1,10 +1,25 @@
-import React from 'react';
-import './ItemCard.css'; // Make sure you import your styles
+import React, { useState } from 'react';
+import './ItemCard.css';
 
 const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const price = Number(item.price);
   const discounted = item.discountedPrice ? Number(item.discountedPrice) : (price * 0.85).toFixed(2);
   const hasDiscount = item.discountedPrice || (!item.discountedPrice && price !== discounted);
+
+  const images = Array.isArray(item.images) && item.images.length > 0 ? item.images : [item.imageUrl];
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  const goToImage = (index) => {
+    setCurrentImageIndex(index);
+  };
 
   return (
     <div className="item-card">
@@ -14,15 +29,32 @@ const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
           <button className="delete-btn" onClick={onDelete}>Delete</button>
         </div>
       )}
-      {Array.isArray(item.images) && item.images.length > 0 ? (
-        <div className="item-images-gallery">
-          {item.images.map((img, idx) => (
-            <img key={idx} src={img} alt={item.title + ' ' + (idx + 1)} className="item-image-multi" />
-          ))}
-        </div>
-      ) : (
-        <img src={item.imageUrl} alt={item.title} />
-      )}
+      <div className="item-image-carousel">
+        <img 
+          src={images[currentImageIndex]} 
+          alt={item.title + ' ' + (currentImageIndex + 1)} 
+          className="item-image-main"
+        />
+        {images.length > 1 && (
+          <>
+            <button className="carousel-btn prev-btn" onClick={prevImage}>
+              ‹
+            </button>
+            <button className="carousel-btn next-btn" onClick={nextImage}>
+              ›
+            </button>
+            <div className="carousel-dots">
+              {images.map((_, index) => (
+                <button
+                  key={index}
+                  className={`dot ${index === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => goToImage(index)}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
       <h2>{item.title}</h2>
       <div className="price-container">
         {hasDiscount ? (
