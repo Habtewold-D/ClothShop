@@ -1,7 +1,8 @@
 // src/pages/Home.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css';
+import { API_BASE_URL } from '../api';
 
 const Home = () => {
   const categories = [
@@ -16,6 +17,29 @@ const Home = () => {
   ];
 
   const navigate = useNavigate();
+
+  // Warm-up backend on initial load (non-blocking)
+  useEffect(() => {
+    let cancelled = false;
+    const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+    const warm = async () => {
+      for (let i = 0; i < 2; i++) { // 2 attempts
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 5000); // 5s timeout
+        try {
+          await fetch(`${API_BASE_URL}/health`, { method: 'GET', keepalive: true, signal: controller.signal });
+          clearTimeout(t);
+          break; // warmed
+        } catch (e) {
+          clearTimeout(t);
+          if (cancelled) break;
+          await delay(1000 * (i + 1)); // backoff 1s, 2s
+        }
+      }
+    };
+    warm();
+    return () => { cancelled = true; };
+  }, []);
 
   return (
     <div className="home">

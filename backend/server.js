@@ -22,6 +22,19 @@ const adminRoutes = require('./routes/admin');
 app.use('/api/clothes', clothesRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Health route to warm the service and (optionally) MongoDB
+app.get('/api/health', async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    if (mongoose.connection && mongoose.connection.readyState === 1) {
+      await mongoose.connection.db.admin().ping();
+    }
+  } catch (e) {
+    // swallow errors to keep this endpoint lightweight
+  }
+  res.json({ ok: true, ts: Date.now() });
+});
+
 // Test route
 app.get('/', (req, res) => {
   res.send('API is running');
@@ -29,4 +42,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-}); 
+});
