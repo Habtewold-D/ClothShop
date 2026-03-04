@@ -249,14 +249,27 @@
     opacity: 1;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .mosaic-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mosaic-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
     }
 
-    .card-variant-2,
-    .card-variant-3 {
-        margin-top: 0;
+    .mosaic-card {
+        height: 350px !important;
+        /* Uniform height for mobile stack */
+        margin-top: 0 !important;
+    }
+
+    .mosaic-title {
+        font-size: 1.3rem;
     }
 }
 

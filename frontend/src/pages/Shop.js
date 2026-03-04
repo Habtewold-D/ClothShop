@@ -182,9 +182,9 @@ const Shop = () => {
       {loading ? (
         <div className="loading-skeleton">
           <div className="ethiopian-spinner"></div>
-          <p className="brand-font" style={{ fontSize: '0.9rem', opacity: 0.8, letterSpacing: '2px' }}>Curating Masterpieces...</p>
+          <p className="brand-font" style={{ fontSize: '0.9rem', opacity: 0.8, letterSpacing: '2px' }}>Unveiling Collections...</p>
           <p className="cold-start-note" style={{ fontSize: '0.7rem', opacity: 0.5, marginTop: '8px', fontStyle: 'italic' }}>
-            Waking up the atelier. Thank you for your patience.
+            Preparing your curated experience.
           </p>
         </div>
       ) : (

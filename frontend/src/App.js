@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -9,18 +9,12 @@ import Contact from './pages/Contact';
 import AdminLogin from './pages/AdminLogin';
 import './styles/global.css';  // Global styles
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  useEffect(() => {
-    setIsAdmin(!!localStorage.getItem('adminToken'));
-  }, []);
-  const handleLogout = () => {
-    localStorage.removeItem('adminToken');
-    window.location.reload();
-  };
   return (
     <Router>
+      <ScrollToTop />
       <div className="app-flex-wrapper">
         <Header />
         <div className="main-content">
