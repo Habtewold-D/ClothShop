@@ -4,9 +4,29 @@ const cloudinary = require('../config/cloudinary');
 // GET all clothes
 exports.getClothes = async (req, res) => {
   try {
-    const clothes = await Cloth.find().sort({ createdAt: -1 });
-    res.json(clothes);
+    const { page = 1, limit = 12, category, popular, seasonal } = req.query;
+    const query = {};
+
+    if (category) query.category = category;
+    if (popular === 'true') query.popular = true;
+    if (seasonal === 'true') query.seasonal = true;
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const total = await Cloth.countDocuments(query);
+    const clothes = await Cloth.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    res.json({
+      clothes,
+      total,
+      page: parseInt(page),
+      pages: Math.ceil(total / parseInt(limit))
+    });
   } catch (err) {
+    console.error('getClothes error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -47,10 +67,10 @@ exports.createCloth = async (req, res) => {
 exports.updateCloth = async (req, res) => {
   try {
     const { title, price, discountedPrice, category, popular, seasonal } = req.body;
-    
+
     // Handle existingImages - it might be in different formats
     let existingImages = req.body.existingImages;
-    
+
     const update = {
       title,
       price,
@@ -62,14 +82,14 @@ exports.updateCloth = async (req, res) => {
 
     // Handle images: combine existing and new images
     let finalImages = [];
-    
+
     // Add existing images that should be preserved
     if (existingImages) {
       // If existingImages is a string, convert to array
       const existingImagesArray = Array.isArray(existingImages) ? existingImages : [existingImages];
       finalImages = [...existingImagesArray];
     }
-    
+
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
       const imageUploadPromises = req.files.map(file =>
@@ -83,7 +103,7 @@ exports.updateCloth = async (req, res) => {
           }).end(file.buffer);
         })
       );
-      
+
       try {
         const newImageUrls = await Promise.all(imageUploadPromises);
         finalImages = [...finalImages, ...newImageUrls];
@@ -91,12 +111,12 @@ exports.updateCloth = async (req, res) => {
         return res.status(500).json({ error: 'Image upload failed', details: uploadError.message });
       }
     }
-    
+
     // Always update images if we have any final images, or if we explicitly want to preserve existing ones
     if (finalImages.length > 0 || existingImages) {
       update.images = finalImages;
     }
-    
+
     const cloth = await Cloth.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(cloth);
   } catch (err) {
