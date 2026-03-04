@@ -4,8 +4,8 @@ import './ItemCard.css';
 const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const price = Number(item.price);
-  const discounted = item.discountedPrice ? Number(item.discountedPrice) : (price * 0.85).toFixed(2);
-  const hasDiscount = item.discountedPrice || (!item.discountedPrice && price !== discounted);
+  const discounted = item.discountedPrice ? Number(item.discountedPrice) : null;
+  const hasDiscount = !!discounted;
 
   const images = Array.isArray(item.images) && item.images.length > 0 ? item.images : [item.imageUrl];
 
@@ -17,55 +17,49 @@ const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
     setCurrentImageIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  const goToImage = (index) => {
-    setCurrentImageIndex(index);
-  };
-
   return (
-    <div className="item-card">
+    <div className="item-card-premium">
       {isAdmin && (
-        <div className="admin-controls">
-          <button className="edit-btn" onClick={onEdit}>Edit</button>
-          <button className="delete-btn" onClick={onDelete}>Delete</button>
+        <div className="admin-controls-glass">
+          <button className="edit-btn-icon" onClick={onEdit} title="Edit">✎</button>
+          <button className="delete-btn-icon" onClick={onDelete} title="Delete">×</button>
         </div>
       )}
-      <div className="item-image-carousel">
-        <img 
-          src={images[currentImageIndex]} 
-          alt={item.title + ' ' + (currentImageIndex + 1)} 
-          className="item-image-main"
+
+      <div className="card-media-wrapper">
+        <img
+          src={images[currentImageIndex]}
+          alt={item.title}
+          className="item-image-premium"
         />
+
         {images.length > 1 && (
-          <>
-            <button className="carousel-btn prev-btn" onClick={prevImage}>
-              ‹
-            </button>
-            <button className="carousel-btn next-btn" onClick={nextImage}>
-              ›
-            </button>
-            <div className="carousel-dots">
-              {images.map((_, index) => (
-                <button
-                  key={index}
-                  className={`dot ${index === currentImageIndex ? 'active' : ''}`}
-                  onClick={() => goToImage(index)}
-                />
+          <div className="carousel-nav-premium">
+            <button className="nav-btn-mini" onClick={(e) => { e.stopPropagation(); prevImage(); }}>‹</button>
+            <div className="nav-dots-mini">
+              {images.map((_, i) => (
+                <span key={i} className={`dot-mini ${i === currentImageIndex ? 'active' : ''}`} />
               ))}
             </div>
-          </>
+            <button className="nav-btn-mini" onClick={(e) => { e.stopPropagation(); nextImage(); }}>›</button>
+          </div>
         )}
       </div>
-      <h2>{item.title}</h2>
-      <div className="price-container">
-        {hasDiscount ? (
-          <>
-            <span className="discounted-price">ETB {discounted}</span>
-            <span className="original-price" style={{ textDecoration: 'line-through', color: '#888', marginLeft: 8 }}>ETB {price}</span>
-          </>
-        ) : (
-          <span className="discounted-price">ETB {price}</span>
-        )}
+
+      <div className="card-details-premium">
+        <h3 className="item-title-premium">{item.title}</h3>
+        <div className="price-box-premium">
+          {hasDiscount ? (
+            <>
+              <span className="price-disc">ETB {discounted}</span>
+              <span className="price-orig">ETB {price}</span>
+            </>
+          ) : (
+            <span className="price-curr">ETB {price}</span>
+          )}
+        </div>
       </div>
+      <div className="tibeb-accent-line"></div>
     </div>
   );
 };

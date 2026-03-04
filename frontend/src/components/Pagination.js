@@ -2,7 +2,7 @@
 import React from 'react';
 import './Pagination.css';  // Ensure the CSS is imported correctly
 
-const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage, totalPages }) => {
+const Pagination = ({ itemsPerPage, paginate, currentPage, totalPages }) => {
   const pageNumbers = [];
   for (let i = 1; i <= totalPages; i++) {
     pageNumbers.push(i);

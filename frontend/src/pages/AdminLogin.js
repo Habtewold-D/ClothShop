@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { API_BASE_URL } from '../api';
+import { apiService } from '../services/apiService';
 import './AdminLogin.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,21 +15,12 @@ const AdminLogin = ({ onLogin }) => {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE_URL}/admin/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-      const data = await res.json();
-      if (res.ok && data.token) {
-        localStorage.setItem('adminToken', data.token);
-        if (onLogin) onLogin();
-        navigate('/shop');
-      } else {
-        setError(data.error || 'Login failed');
-      }
+      const data = await apiService.login(username, password);
+      localStorage.setItem('adminToken', data.token);
+      if (onLogin) onLogin();
+      navigate('/shop');
     } catch (err) {
-      setError('Server error');
+      setError(err.message || 'Login failed');
     }
     setLoading(false);
   };

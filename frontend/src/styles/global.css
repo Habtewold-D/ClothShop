@@ -1,46 +1,119 @@
-/* src/styles/global.css */
-@media (max-width: 768px) {
-    .items-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-  
-    .item-card {
-      padding: 15px;
-      text-align: center;
-    }
-  
-    .item-info h3 {
-      font-size: 1rem;
-    }
-  
-    .item-info p {
-      font-size: 1rem;
-    }
-  
-    .pagination button {
-      font-size: 0.9rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .items-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-  
-    .item-info h3 {
-      font-size: 0.9rem;
-    }
-  
-    .item-info p {
-      font-size: 0.9rem;
-    }
-  
-    .pagination button {
-      font-size: 0.8rem;
-    }
-  }
-  
+:root {
+  /* Color Palette */
+  --bg-primary: #FDFBF7;
+  /* Refined Ivory for cultural warmth */
+  --bg-dark: #1A1A1A;
+  --accent-gold: #D4AF37;
+  --accent-gold-light: #F1E5AC;
+  --accent-red: #8B0000;
+  --accent-green: #006400;
+  --text-main: #2D2D2D;
+  --text-muted: #666666;
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+
+  /* Typography */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Outfit', sans-serif;
+
+  /* Transitions */
+  --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3,
+h4,
+.brand-font {
+  font-family: var(--font-heading);
+}
+
+/* Tibeb Pattern Utilities */
+.tibeb-border {
+  position: relative;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  display: inline-block;
+  /* Ensure width matches text */
+}
+
+.tibeb-border::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Full width of the heading */
+  height: 4px;
+  /* Clean, noticeable thickness */
+  background: linear-gradient(to right, var(--accent-green), var(--accent-gold), var(--accent-red));
+}
+
+.tibeb-gradient-text {
+  background: linear-gradient(to right, var(--accent-green), var(--accent-gold), var(--accent-red));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Premium Button */
+.btn-premium {
+  padding: 14px 40px;
+  background: transparent;
+  color: #fff;
+  border: 1px solid var(--accent-gold);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: var(--accent-gold);
+  transition: var(--transition-smooth);
+  z-index: -1;
+}
+
+.btn-premium:hover::before {
+  width: 100%;
+}
+
+.btn-premium:hover {
+  color: var(--bg-dark);
+}
+
+.app-flex-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}

@@ -4,59 +4,67 @@ import './About.css';
 
 const About = () => {
   return (
-    <div className="about">
-      <div className="about-content">
-        <div className="about-image">
-          <img src="/assets/images/bernos Logo.jpg" alt="Bernos Logo" />
+    <div className="about-luxury-container">
+      <header className="about-hero-minimal">
+        <h1 className="brand-font tibeb-border">About the Company</h1>
+        <p className="hero-tagline">Preserving Heritage, Crafting Excellence</p>
+      </header>
+
+      <div className="about-content-wrapper">
+        {/* Visual Sidebar */}
+        <div className="about-visual-side">
+          <div className="brand-insignia-box">
+            <img src="/assets/images/bernos Logo.jpg" alt="Bernos Design" className="brand-logo-main" />
+            <div className="insignia-border-accent"></div>
+          </div>
         </div>
-        <div className="about-text">
-          <h1>About the Company</h1>
-          
-          {/* Company Overview */}
-          <div className="section">
-            <h3>Company Overview</h3>
-            <ul>
-              <li><strong>Name:</strong> Bernos Design</li>
-              <li><strong>Established:</strong> 2016E.C</li>
-            </ul>
+
+        {/* Modular Info Grid */}
+        <div className="about-info-grid">
+          <div className="info-tile tile-overview">
+            <h2 className="brand-font">Company Overview</h2>
+            <div className="tile-content">
+              <p><span>Name:</span> Bernos Design</p>
+              <p><span>Established:</span> 2016E.C</p>
+            </div>
           </div>
 
-          {/* Mission Statement */}
-          <div className="section">
-            <h3>Mission Statement</h3>
-            <p>
-              Our mission is to celebrate and promote Ethiopian culture through the sale of traditional clothing, providing <strong>high-quality, authentic garments</strong> that reflect the rich heritage and artistry of Ethiopia.
+          <div className="info-tile">
+            <h2 className="brand-font">Mission Statement</h2>
+            <p className="tile-text">
+              Our mission is to celebrate and promote Ethiopian culture through the sale of traditional clothing,
+              providing high-quality, authentic garments that reflect the rich heritage and artistry of Ethiopia.
             </p>
           </div>
 
-          {/* Vision Statement */}
-          <div className="section">
-            <h3>Vision Statement</h3>
-            <p>
-              To be the <strong>leading retailer</strong> of Ethiopian traditional clothing, recognized for our commitment to <strong>quality</strong>, <strong>cultural preservation</strong>, and customer satisfaction.
+          <div className="info-tile">
+            <h2 className="brand-font">Vision Statement</h2>
+            <p className="tile-text">
+              To be the leading retailer of Ethiopian traditional clothing, recognized for our commitment to quality,
+              cultural preservation, and customer satisfaction.
             </p>
           </div>
 
-          {/* Values */}
-          <div className="section">
-            <h3>Values</h3>
-            <ul className="values-list">
-              <li><strong>Authenticity</strong></li>
-              <li><strong>Passion</strong></li>
-              <li><strong>Integrity</strong></li>
-              <li><strong>Cultural appreciation</strong></li>
-              <li><strong>Quality</strong></li>
-            </ul>
-          </div>
-
-          {/* Closing Statement */}
-          <div className="section">
-            <p>
-              At <strong>Bernos Design</strong>, we are passionate about sharing the beauty of Ethiopian traditional clothing with the world. Our commitment to <strong>quality</strong>, <strong>authenticity</strong>, and <strong>cultural appreciation</strong> sets us apart in the market. We invite you to join us on this journey of celebrating Ethiopian heritage through fashion.
-          </p>
+          <div className="info-tile tile-values">
+            <h2 className="brand-font">Values</h2>
+            <div className="values-identity-cloud">
+              {['Authenticity', 'Passion', 'Integrity', 'Cultural appreciation', 'Quality'].map(value => (
+                <span key={value} className="identity-tag">{value}</span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
+
+      <section className="about-closing-card">
+        <div className="closing-inner-content">
+          <p>
+            At <strong>Bernos Design</strong>, we are passionate about sharing the beauty of Ethiopian traditional clothing with the world.
+            Our commitment to quality, authenticity, and cultural appreciation sets us apart in the market.
+            We invite you to join us on this journey of celebrating Ethiopian heritage through fashion.
+          </p>
+        </div>
+      </section>
     </div>
   );
 };
