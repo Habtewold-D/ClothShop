@@ -182,9 +182,9 @@ const Shop = () => {
       {loading ? (
         <div className="loading-skeleton">
           <div className="ethiopian-spinner"></div>
-          <p className="brand-font">Refining elegance...</p>
-          <p className="cold-start-note" style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '10px' }}>
-            Preparing our latest collections. Please wait a moment while we wake up the atelier...
+          <p className="brand-font" style={{ fontSize: '0.9rem', opacity: 0.8, letterSpacing: '2px' }}>Curating Masterpieces...</p>
+          <p className="cold-start-note" style={{ fontSize: '0.7rem', opacity: 0.5, marginTop: '8px', fontStyle: 'italic' }}>
+            Waking up the atelier. Thank you for your patience.
           </p>
         </div>
       ) : (

@@ -23,11 +23,6 @@ const App = () => {
     <Router>
       <div className="app-flex-wrapper">
         <Header />
-        {isAdmin && (
-          <div style={{ textAlign: 'right', padding: '10px 30px 0 0' }}>
-            <button onClick={handleLogout} style={{ background: '#d32f2f', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 16px', cursor: 'pointer' }}>Logout</button>
-          </div>
-        )}
         <div className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />

@@ -76,14 +76,21 @@ exports.createCloth = async (req, res) => {
 exports.updateCloth = async (req, res) => {
   try {
     const { title, price, discountedPrice, category, popular, seasonal } = req.body;
-    let existingImages = req.body.existingImages;
-    if (typeof existingImages === 'string') {
-      try {
-        existingImages = JSON.parse(existingImages);
-      } catch (e) {
-        existingImages = [existingImages];
-      }
+    let rawExistingImages = req.body.existingImages || [];
+    if (!Array.isArray(rawExistingImages)) {
+      rawExistingImages = [rawExistingImages];
     }
+
+    const existingImages = rawExistingImages.map(img => {
+      if (typeof img === 'string') {
+        try {
+          return JSON.parse(img);
+        } catch (e) {
+          return img; // Return as legacy string URL
+        }
+      }
+      return img;
+    });
 
     const currentCloth = await Cloth.findById(req.params.id);
     if (!currentCloth) return res.status(404).json({ error: 'Cloth not found' });
