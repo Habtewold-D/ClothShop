@@ -22,6 +22,11 @@ const adminRoutes = require('./routes/admin');
 app.use('/api/clothes', clothesRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Ping route for keep-alive/warm-up
+app.get('/api/ping', (req, res) => {
+  res.json({ status: 'awake', timestamps: Date.now() });
+});
+
 // Health route to warm the service and (optionally) MongoDB
 app.get('/api/health', async (req, res) => {
   try {

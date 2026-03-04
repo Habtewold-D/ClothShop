@@ -40,25 +40,34 @@ exports.createCloth = async (req, res) => {
     }
     const imageUploadPromises = req.files.map(file =>
       new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-          if (error) reject(error);
-          else resolve(result.secure_url);
-        }).end(file.buffer);
+        cloudinary.uploader.upload_stream(
+          {
+            resource_type: 'image',
+            folder: 'bernos_boutique',
+            quality: 'auto',
+            fetch_format: 'auto'
+          },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve({ url: result.secure_url, public_id: result.public_id });
+          }
+        ).end(file.buffer);
       })
     );
-    const imageUrls = await Promise.all(imageUploadPromises);
+    const imagesInfo = await Promise.all(imageUploadPromises);
     const newCloth = new Cloth({
       title,
       price,
       discountedPrice,
       category,
-      images: imageUrls,
+      images: imagesInfo,
       popular: popular === 'true' || popular === true,
       seasonal: seasonal === 'true' || seasonal === true,
     });
     await newCloth.save();
     res.status(201).json(newCloth);
   } catch (err) {
+    console.error('Create error:', err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -67,9 +76,30 @@ exports.createCloth = async (req, res) => {
 exports.updateCloth = async (req, res) => {
   try {
     const { title, price, discountedPrice, category, popular, seasonal } = req.body;
-
-    // Handle existingImages - it might be in different formats
     let existingImages = req.body.existingImages;
+    if (typeof existingImages === 'string') {
+      try {
+        existingImages = JSON.parse(existingImages);
+      } catch (e) {
+        existingImages = [existingImages];
+      }
+    }
+
+    const currentCloth = await Cloth.findById(req.params.id);
+    if (!currentCloth) return res.status(404).json({ error: 'Cloth not found' });
+
+    // Find images to delete from Cloudinary
+    const existingPublicIds = existingImages.map(img => typeof img === 'string' ? null : img.public_id).filter(id => id);
+    const deletedImages = currentCloth.images.filter(img =>
+      img.public_id && !existingPublicIds.includes(img.public_id)
+    );
+
+    // Delete removed images from Cloudinary
+    for (const img of deletedImages) {
+      if (img.public_id) {
+        await cloudinary.uploader.destroy(img.public_id);
+      }
+    }
 
     const update = {
       title,
@@ -80,42 +110,32 @@ exports.updateCloth = async (req, res) => {
       seasonal: seasonal === 'true' || seasonal === true,
     };
 
-    // Handle images: combine existing and new images
-    let finalImages = [];
-
-    // Add existing images that should be preserved
-    if (existingImages) {
-      // If existingImages is a string, convert to array
-      const existingImagesArray = Array.isArray(existingImages) ? existingImages : [existingImages];
-      finalImages = [...existingImagesArray];
-    }
+    let finalImages = [...existingImages];
 
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
       const imageUploadPromises = req.files.map(file =>
         new Promise((resolve, reject) => {
-          cloudinary.uploader.upload_stream({ resource_type: 'image' }, (error, result) => {
-            if (error) {
-              reject(error);
-            } else {
-              resolve(result.secure_url);
+          cloudinary.uploader.upload_stream(
+            {
+              resource_type: 'image',
+              folder: 'bernos_boutique',
+              quality: 'auto',
+              fetch_format: 'auto'
+            },
+            (error, result) => {
+              if (error) reject(error);
+              else resolve({ url: result.secure_url, public_id: result.public_id });
             }
-          }).end(file.buffer);
+          ).end(file.buffer);
         })
       );
 
-      try {
-        const newImageUrls = await Promise.all(imageUploadPromises);
-        finalImages = [...finalImages, ...newImageUrls];
-      } catch (uploadError) {
-        return res.status(500).json({ error: 'Image upload failed', details: uploadError.message });
-      }
+      const newImagesInfo = await Promise.all(imageUploadPromises);
+      finalImages = [...finalImages, ...newImagesInfo];
     }
 
-    // Always update images if we have any final images, or if we explicitly want to preserve existing ones
-    if (finalImages.length > 0 || existingImages) {
-      update.images = finalImages;
-    }
+    update.images = finalImages;
 
     const cloth = await Cloth.findByIdAndUpdate(req.params.id, update, { new: true });
     res.json(cloth);
@@ -128,9 +148,20 @@ exports.updateCloth = async (req, res) => {
 // DELETE cloth
 exports.deleteCloth = async (req, res) => {
   try {
+    const cloth = await Cloth.findById(req.params.id);
+    if (!cloth) return res.status(404).json({ message: 'Cloth not found' });
+
+    // Delete images from Cloudinary
+    for (const img of cloth.images) {
+      if (img.public_id) {
+        await cloudinary.uploader.destroy(img.public_id);
+      }
+    }
+
     await Cloth.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Cloth deleted' });
+    res.json({ message: 'Cloth and associated images deleted' });
   } catch (err) {
+    console.error('Delete error:', err);
     res.status(500).json({ error: 'Server error' });
   }
-}; 
+};
