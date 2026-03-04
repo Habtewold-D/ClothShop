@@ -88,10 +88,13 @@ exports.updateCloth = async (req, res) => {
     const currentCloth = await Cloth.findById(req.params.id);
     if (!currentCloth) return res.status(404).json({ error: 'Cloth not found' });
 
-    // Find images to delete from Cloudinary
-    const existingPublicIds = existingImages.map(img => typeof img === 'string' ? null : img.public_id).filter(id => id);
+    // Find images to delete from Cloudinary (only for new-style objects with public_id)
+    const existingPublicIds = existingImages
+      .map(img => (img && typeof img === 'object') ? img.public_id : null)
+      .filter(id => id);
+
     const deletedImages = currentCloth.images.filter(img =>
-      img.public_id && !existingPublicIds.includes(img.public_id)
+      (img && typeof img === 'object' && img.public_id) && !existingPublicIds.includes(img.public_id)
     );
 
     // Delete removed images from Cloudinary
@@ -151,9 +154,9 @@ exports.deleteCloth = async (req, res) => {
     const cloth = await Cloth.findById(req.params.id);
     if (!cloth) return res.status(404).json({ message: 'Cloth not found' });
 
-    // Delete images from Cloudinary
+    // Delete images from Cloudinary (only if they have a public_id)
     for (const img of cloth.images) {
-      if (img.public_id) {
+      if (img && typeof img === 'object' && img.public_id) {
         await cloudinary.uploader.destroy(img.public_id);
       }
     }
