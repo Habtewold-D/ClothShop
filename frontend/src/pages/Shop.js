@@ -26,7 +26,6 @@ const itemsPerPage = 12;
 const Shop = () => {
   const [clothes, setClothes] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
-  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -40,10 +39,6 @@ const Shop = () => {
   const queryParams = new URLSearchParams(location.search);
   const currentCategory = queryParams.get('category') || "";
   const [currentPage, setCurrentPage] = useState(1);
-
-  // For simplicity, we'll keep the seasonal filter visibility 
-  // until we have a proper metadata endpoint
-  const filterCategories = categories;
 
   const fetchClothes = useCallback(async () => {
     setLoading(true);
@@ -125,31 +120,29 @@ const Shop = () => {
     setEditLoading(false);
   };
 
-  const handleCategoryChange = (e) => {
-    const handleCategoryChange = (val) => {
-      if (val === "") {
-        navigate('/shop');
-      } else {
-        navigate(`/shop?category=${encodeURIComponent(val)}`);
-      }
-      setCurrentPage(1);
-    };
+  const handleCategoryChange = (val) => {
+    if (val === "") {
+      navigate('/shop');
+    } else {
+      navigate(`/shop?category=${encodeURIComponent(val)}`);
+    }
+    setCurrentPage(1);
+  };
 
-    return (
-      <div className="shop-minimal">
-        <header className="shop-header-header">
-          <h1 className="brand-font">
+  return (
+    <div className="shop-minimal">
+      <div className="shop-header-row">
+        <div className="shop-title-box">
+          <h1 className="shop-category-title">
             {currentCategory ? (currentCategory === 'seasonal' ? 'Seasonal Heritage' : (currentCategory === 'popular' ? 'Popular Pieces' : currentCategory)) : 'All Collections'}
           </h1>
-          <div className="header-accent-line"></div>
-        </header>
+        </div>
 
-        <div className="shop-controls-minimal">
+        <div className="shop-actions-box">
           <div className="filter-dropdown-box">
-            <label htmlFor="category-select" className="filter-label">Filter by Category</label>
             <select
               id="category-select"
-              className="premium-select"
+              className="elite-select"
               value={currentCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
             >
@@ -162,68 +155,76 @@ const Shop = () => {
           </div>
 
           {isAdmin && (
-            <button className="btn-majestic-gold-sm" onClick={handleAdd}>
-              + Add Masterpiece
+            <button className="btn-majestic-admin" onClick={handleAdd}>
+              + New Piece
             </button>
           )}
         </div>
-
-        {showAddModal && (
-          <ClothForm
-            onSubmit={handleAddSubmit}
-            onClose={() => setShowAddModal(false)}
-            loading={addLoading}
-          />
-        )}
-
-        {showEditModal && editItem && (
-          <ClothForm
-            initialData={editItem}
-            onSubmit={handleEditSubmit}
-            onClose={() => { setShowEditModal(false); setEditItem(null); }}
-            loading={editLoading}
-          />
-        )}
-
-        {loading ? (
-          <div className="loading-skeleton">
-            <div className="ethiopian-spinner"></div>
-            <p className="brand-font">Refining elegance...</p>
-          </div>
-        ) : (
-          <>
-            {(!clothes || clothes.length === 0) ? (
-              <div className="no-items-message">
-                <div className="no-items-icon">◈</div>
-                <h3 className="brand-font">The {currentCategory ? (currentCategory === 'seasonal' ? 'Seasonal' : (currentCategory === 'popular' ? 'Popular' : currentCategory)) : 'Full'} Collection is currently curated</h3>
-                <p>We are presently hand-weaving new masterpieces for this category.</p>
-                <button className="btn-majestic-gold-sm" onClick={() => setCurrentCategory("")}>Explore All Pieces</button>
-              </div>
-            ) : (
-              <>
-                <div className="items-grid-premium">
-                  {clothes.map(item => (
-                    <ItemCard
-                      key={item._id}
-                      item={item}
-                      isAdmin={isAdmin}
-                      onEdit={() => handleEdit(item)}
-                      onDelete={() => handleDelete(item)}
-                    />
-                  ))}
-                </div>
-                <Pagination
-                  itemsPerPage={itemsPerPage}
-                  paginate={paginate}
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                />
-              </>
-            )}
-          </>
-        )}
       </div>
-    );
-  };
 
-  export default Shop;
+      {showAddModal && (
+        <ClothForm
+          onSubmit={handleAddSubmit}
+          onClose={() => setShowAddModal(false)}
+          loading={addLoading}
+        />
+      )}
+
+      {showEditModal && editItem && (
+        <ClothForm
+          initialData={editItem}
+          onSubmit={handleEditSubmit}
+          onClose={() => { setShowEditModal(false); setEditItem(null); }}
+          loading={editLoading}
+        />
+      )}
+
+      {loading ? (
+        <div className="loading-skeleton">
+          <div className="ethiopian-spinner"></div>
+          <p className="brand-font">Refining elegance...</p>
+          <p className="cold-start-note" style={{ fontSize: '0.8rem', opacity: 0.6, marginTop: '10px' }}>
+            Preparing our latest collections. Please wait a moment while we wake up the atelier...
+          </p>
+        </div>
+      ) : (
+        <>
+          {(!clothes || clothes.length === 0) ? (
+            <div className="no-items-message">
+              <h2 className="brand-font no-items-title">No items found</h2>
+              <p className="no-items-detail">
+                There are no clothes available in the <strong>"{currentCategory ? (currentCategory === 'seasonal' ? 'Seasonal Heritage' : (currentCategory === 'popular' ? 'Popular Pieces' : currentCategory)) : 'All Collections'}"</strong> category at the moment.
+              </p>
+              <p className="no-items-suggestion">
+                Please try selecting a different category or check back later for new arrivals.
+              </p>
+              <button className="btn-majestic-gold-sm" onClick={() => handleCategoryChange("")}>View All Masterpieces</button>
+            </div>
+          ) : (
+            <>
+              <div className="items-grid-premium">
+                {clothes.map(item => (
+                  <ItemCard
+                    key={item._id}
+                    item={item}
+                    isAdmin={isAdmin}
+                    onEdit={() => handleEdit(item)}
+                    onDelete={() => handleDelete(item)}
+                  />
+                ))}
+              </div>
+              <Pagination
+                itemsPerPage={itemsPerPage}
+                paginate={paginate}
+                currentPage={currentPage}
+                totalPages={totalPages}
+              />
+            </>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Shop;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import './Header.css';
-import { FaUserCircle } from 'react-icons/fa';
 
 const Header = () => {
   const [isAdmin, setIsAdmin] = useState(!!localStorage.getItem('adminToken'));
@@ -55,13 +54,7 @@ const Header = () => {
           <li>
             <NavLink to="/contact" activeClassName="active" onClick={closeMenu}>Contact</NavLink>
           </li>
-          {!isAdmin ? (
-            <li>
-              <Link to="/admin-login" className="login-btn" title="Admin Login" onClick={closeMenu}>
-                <FaUserCircle size={28} />
-              </Link>
-            </li>
-          ) : (
+          {isAdmin && (
             <li>
               <button className="logout-btn nav-logout" onClick={() => { handleLogout(); closeMenu(); }}>Logout</button>
             </li>

@@ -1,41 +1,172 @@
-.admin-login {
-  max-width: 350px;
-  margin: 60px auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+.admin-login-noble {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow: hidden;
+  background: #000;
+}
+
+.login-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.login-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: loginKenBurns 20s ease-out infinite alternate;
+  opacity: 0.6;
+}
+
+@keyframes loginKenBurns {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.login-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.8) 100%);
+  z-index: 2;
+}
+
+.login-card-elite {
+  position: relative;
+  z-index: 3;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  width: 100%;
+  max-width: 420px;
+  padding: 50px 40px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
+  animation: loginSlideUp 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
-.admin-login h2 {
-  margin-bottom: 1.5rem;
+
+@keyframes loginSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.admin-login form {
+
+.login-header-boutique {
+  margin-bottom: 40px;
+}
+
+.login-form-boutique {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 25px;
 }
-.admin-login input {
-  padding: 0.7rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
+
+.input-group-boutique {
+  width: 100%;
 }
-.admin-login button {
-  padding: 0.7rem;
-  background: #f5a623;
-  color: #fff;
+
+.login-header-boutique h2 {
+  font-size: 2.2rem;
+  letter-spacing: 8px;
+  font-weight: 300;
+  color: var(--bg-dark);
+}
+
+.boutique-input {
+  width: 100%;
+  padding: 18px 0;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--bg-dark);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
-.admin-login button:disabled {
-  background: #ccc;
+
+.boutique-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.boutique-input::placeholder {
+  color: rgba(0, 0, 0, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.password-group {
+  position: relative;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--accent-gold);
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.password-toggle-btn:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.error-boutique {
+  color: var(--accent-red);
+  font-size: 0.85rem;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
+
+.login-footer-mini {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.login-footer-mini p {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+}
+
+.btn-majestic-gold-sm:disabled {
+  opacity: 0.6;
   cursor: not-allowed;
 }
-.admin-login .error {
-  color: #d32f2f;
-  margin-top: 0.5rem;
-} 

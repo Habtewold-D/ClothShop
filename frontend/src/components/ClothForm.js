@@ -83,7 +83,9 @@ const ClothForm = ({ initialData = {}, onSubmit, onClose, loading }) => {
 
       imageStates.forEach((state) => {
         if (state.type === 'original') {
-          formData.append('existingImages', state.url);
+          // Send stringified object if it's new structure, or just string if old
+          const dataToSend = typeof state.data === 'string' ? state.data : JSON.stringify(state.data);
+          formData.append('existingImages', dataToSend);
         } else if (state.type === 'replaced' || state.type === 'additional') {
           formData.append('images', state.file);
         }

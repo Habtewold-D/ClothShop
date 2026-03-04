@@ -127,31 +127,44 @@
 }
 
 .item-title-premium {
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
+  font-family: var(--font-body);
+  /* Changed to normal body font */
+  font-size: 1.4rem;
+  /* Adjusted for better balance with body font */
   margin-bottom: 8px;
-  color: var(--text-main);
+  color: var(--bg-dark);
+  text-transform: none;
+  /* Removed uppercase */
   letter-spacing: 0.5px;
+  /* Standard spacing */
+  font-weight: 500;
 }
 
 .price-box-premium {
   display: flex;
   justify-content: center;
-  gap: 12px;
+  gap: 15px;
   align-items: baseline;
 }
 
 .price-disc,
 .price-curr {
-  font-weight: 600;
-  color: var(--bg-dark);
+  font-weight: 700;
+  color: var(--text-muted);
   font-size: 1.1rem;
+  /* Increased from 0.85rem */
+  letter-spacing: 1.5px;
+}
+
+.price-disc {
+  color: var(--accent-gold);
 }
 
 .price-orig {
   text-decoration: line-through;
-  color: var(--text-muted);
+  color: rgba(0, 0, 0, 0.2);
   font-size: 0.9rem;
+  /* Increased from 0.75rem */
 }
 
 .tibeb-accent-line {

@@ -1,11 +1,14 @@
 import { useState } from 'react';
 
 export const useImageManager = (initialImages = []) => {
-    const [previews, setPreviews] = useState(initialImages);
+    const [previews, setPreviews] = useState(() =>
+        initialImages.map(img => typeof img === 'string' ? img : img.url)
+    );
     const [imageStates, setImageStates] = useState(() =>
-        initialImages.map((url, index) => ({
+        initialImages.map((img, index) => ({
             type: 'original',
-            url: url,
+            url: typeof img === 'string' ? img : img.url,
+            data: typeof img === 'string' ? img : img, // Store full object if available
             originalIndex: index
         }))
     );

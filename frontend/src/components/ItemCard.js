@@ -28,7 +28,7 @@ const ItemCard = ({ item, isAdmin, onEdit, onDelete }) => {
 
       <div className="card-media-wrapper">
         <img
-          src={images[currentImageIndex]}
+          src={typeof images[currentImageIndex] === 'string' ? images[currentImageIndex] : images[currentImageIndex]?.url}
           alt={item.title}
           className="item-image-premium"
         />
